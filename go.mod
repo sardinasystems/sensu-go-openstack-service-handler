@@ -5,12 +5,8 @@ go 1.18
 require (
 	github.com/gophercloud/gophercloud v1.3.0
 	github.com/gophercloud/utils v0.0.0-20230418172808-6eab72e966e1
-	github.com/jedib0t/go-pretty/v6 v6.4.6
 	github.com/sensu/core/v2 v2.18.0
-	github.com/sensu/sensu-go/api/core/v2 v2.16.0
 	github.com/sensu/sensu-plugin-sdk v0.18.0
-	github.com/stretchr/testify v1.8.2
-	go.uber.org/multierr v1.11.0
 )
 
 require (
@@ -26,17 +22,13 @@ require (
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/konsorten/go-windows-terminal-sequences v1.0.3 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.7 // indirect
 	github.com/robertkrimen/otto v0.2.1 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
 	github.com/sensu/sensu-api-tools v0.2.0 // indirect
-	github.com/sensu/sensu-go/types v0.12.0 // indirect
-	github.com/sensu/sensu-licensing v0.1.2 // indirect
 	github.com/sensu/sensu-licensing/v2 v2.2.1 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
@@ -45,6 +37,7 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.15.0 // indirect
+	github.com/stretchr/testify v1.8.2 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.8 // indirect
 	golang.org/x/net v0.9.0 // indirect
