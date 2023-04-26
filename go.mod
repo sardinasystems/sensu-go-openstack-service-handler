@@ -1,10 +1,15 @@
-module github.com/{{ .GithubUser }}/{{ .GithubProject }}
+module github.com/sardinasystems/sensu-go-openstack-service-handler
 
 go 1.18
 
 require (
-	github.com/sensu/sensu-go/api/core/v2 v2.14.0
-	github.com/sensu/sensu-plugin-sdk v0.16.0-alpha4
+	github.com/gophercloud/gophercloud v1.3.0
+	github.com/gophercloud/utils v0.0.0-20230316075016-e15d7ee3ba3b
+	github.com/jedib0t/go-pretty/v6 v6.4.6
+	github.com/sensu/core/v2 v2.18.0
+	github.com/sensu/sensu-plugin-sdk v0.18.0
+	github.com/stretchr/testify v1.8.2
+	go.uber.org/multierr v1.11.0
 )
 
 require (
