@@ -3,7 +3,7 @@ module github.com/sardinasystems/sensu-go-openstack-service-handler
 go 1.18
 
 require (
-	github.com/gophercloud/gophercloud v1.4.0
+	github.com/gophercloud/gophercloud v1.5.0
 	github.com/gophercloud/utils v0.0.0-20230523080330-de873b9cf00d
 	github.com/sensu/core/v2 v2.19.0
 	github.com/sensu/sensu-plugin-sdk v0.18.0
@@ -37,7 +37,6 @@ require (
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.15.0 // indirect
-	github.com/stretchr/testify v1.8.3 // indirect
 	github.com/subosito/gotenv v1.4.2 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.9 // indirect
 	golang.org/x/net v0.10.0 // indirect
