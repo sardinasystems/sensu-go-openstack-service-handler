@@ -1,15 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"time"
 
-	"github.com/gophercloud/gophercloud"
-	os_services "github.com/gophercloud/gophercloud/openstack/compute/v2/extensions/services"
-	oscli "github.com/gophercloud/utils/client"
-	"github.com/gophercloud/utils/openstack/clientconfig"
+	"github.com/gophercloud/gophercloud/v2"
+	"github.com/gophercloud/gophercloud/v2/openstack"
+	os_services "github.com/gophercloud/gophercloud/v2/openstack/compute/v2/extensions/services"
+	"github.com/gophercloud/gophercloud/v2/openstack/config"
+	clouds "github.com/gophercloud/gophercloud/v2/openstack/config/clouds"
 	corev2 "github.com/sensu/core/v2"
 	"github.com/sensu/sensu-plugin-sdk/sensu"
 )
@@ -111,35 +114,44 @@ func checkArgs(event *corev2.Event) error {
 }
 
 func executeHandler(event *corev2.Event) error {
+	ctx, cf := context.WithTimeout(context.Background(), 1*time.Minute)
+	defer cf()
+
+	// XXX clouds.WithLocations() hard to make conditional, as cloudOpts unexported and there no type suitable to make array
 	if plugin.CloudsFile != "" {
 		os.Setenv("OS_CLIENT_CONFIG_FILE", plugin.CloudsFile)
 	}
 
 	var httpCli *http.Client
 	if plugin.Debug {
-		httpCli = &http.Client{
-			Transport: &oscli.RoundTripper{
-				Rt:     &http.Transport{},
-				Logger: &oscli.DefaultLogger{},
-			},
-		}
+		httpCli = &http.Client{Transport: &http.Transport{}}
+		// Wait till it support v2
+		// httpCli = &http.Client{
+		// 	Transport: &oscli.RoundTripper{
+		// 		Rt:     &http.Transport{},
+		// 		Logger: &oscli.DefaultLogger{},
+		// 	},
+		// }
 	} else {
 		httpCli = &http.Client{Transport: &http.Transport{}}
 	}
 
-	opts := &clientconfig.ClientOpts{
-		Cloud:      plugin.Cloud,
-		HTTPClient: httpCli,
+	ao, eo, tlsCfg, err := clouds.Parse(clouds.WithCloudName(plugin.Cloud))
+	if err != nil {
+		return err
 	}
 
-	cli, err := clientconfig.NewServiceClient(plugin.Service, opts)
+	// check never need to reauth
+	ao.AllowReauth = false
+
+	pc, err := config.NewProviderClient(ctx, ao, config.WithHTTPClient(*httpCli), config.WithTLSConfig(tlsCfg))
 	if err != nil {
 		return err
 	}
 
 	switch plugin.Service {
 	case "compute":
-		return handleCompute(cli, event)
+		return handleCompute(ctx, pc, eo, event)
 
 	// case "volume":
 	// 	return handleVolume(cli)
@@ -161,7 +173,11 @@ func executeHandler(event *corev2.Event) error {
 	}
 }
 
-func handleCompute(cli *gophercloud.ServiceClient, event *corev2.Event) error {
+func handleCompute(ctx context.Context, pc *gophercloud.ProviderClient, eo gophercloud.EndpointOpts, event *corev2.Event) error {
+	cli, err := openstack.NewComputeV2(pc, eo)
+	if err != nil {
+		return err
+	}
 	cli.Microversion = computeMicroversion
 
 	host := plugin.Host
@@ -206,7 +222,7 @@ func handleCompute(cli *gophercloud.ServiceClient, event *corev2.Event) error {
 	}
 
 	log.Printf("Apply action: %s", updateOpts.Status)
-	_, err := os_services.Update(cli, computeID, updateOpts).Extract()
+	_, err = os_services.Update(cli, computeID, updateOpts).Extract()
 	if err != nil {
 		return fmt.Errorf("Compute service id: %s update error: %w", computeID, err)
 	}
