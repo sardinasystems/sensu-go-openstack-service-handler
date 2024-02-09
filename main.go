@@ -174,6 +174,8 @@ func executeHandler(event *corev2.Event) error {
 }
 
 func handleCompute(ctx context.Context, pc *gophercloud.ProviderClient, eo gophercloud.EndpointOpts, event *corev2.Event) error {
+	_ = ctx
+
 	cli, err := openstack.NewComputeV2(pc, eo)
 	if err != nil {
 		return err
