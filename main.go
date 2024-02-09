@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/gophercloud/gophercloud/v2"
+	gophercloud "github.com/gophercloud/gophercloud/v2"
 	"github.com/gophercloud/gophercloud/v2/openstack"
 	os_services "github.com/gophercloud/gophercloud/v2/openstack/compute/v2/extensions/services"
 	"github.com/gophercloud/gophercloud/v2/openstack/config"
