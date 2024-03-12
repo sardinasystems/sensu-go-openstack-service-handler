@@ -193,7 +193,7 @@ func handleCompute(ctx context.Context, pc *gophercloud.ProviderClient, eo gophe
 			Binary: plugin.Binary,
 			Host:   host,
 		}
-		pages, err := os_services.List(cli, query).AllPages()
+		pages, err := os_services.List(cli, query).AllPages(ctx)
 		if err != nil {
 			return fmt.Errorf("Compute services list error: %w", err)
 		}
@@ -222,7 +222,7 @@ func handleCompute(ctx context.Context, pc *gophercloud.ProviderClient, eo gophe
 	}
 
 	log.Printf("Apply action: %s", updateOpts.Status)
-	_, err = os_services.Update(cli, computeID, updateOpts).Extract()
+	_, err = os_services.Update(ctx, cli, computeID, updateOpts).Extract()
 	if err != nil {
 		return fmt.Errorf("Compute service id: %s update error: %w", computeID, err)
 	}
