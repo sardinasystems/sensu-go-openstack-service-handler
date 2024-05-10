@@ -9,7 +9,7 @@ import (
 
 	"github.com/gophercloud/gophercloud/v2"
 	"github.com/gophercloud/gophercloud/v2/openstack"
-	os_services "github.com/gophercloud/gophercloud/v2/openstack/compute/v2/extensions/services"
+	os_services "github.com/gophercloud/gophercloud/v2/openstack/compute/v2/services"
 	"github.com/gophercloud/gophercloud/v2/openstack/config"
 	clouds "github.com/gophercloud/gophercloud/v2/openstack/config/clouds"
 	oscli "github.com/gophercloud/utils/v2/client"
